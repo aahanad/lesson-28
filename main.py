@@ -1,4 +1,5 @@
 from tkinter import*
+from tkinter.filedialog import*
 screen=Tk()
 screen.title("lists")
 #add funtions
@@ -11,17 +12,31 @@ def delete_item():
     item=list.curselection()
     if item:
         list.delete(item)
-#
+# save function
+def save_file():
+    content=asksaveasfile(defaultextension=".txt")
+    if content is not None:
+        for item in list.get(0,END):
+            print(item.strip(),file=content)
+        list.delete(0,END)
+#open function
+def open_file():
+    doc=askopenfile(title="open_file")
+    if doc is not None:
+        list.delete(0,END)
+        text=doc.readlines()
+        for item in text:
+            list.insert(END,item.strip())
 #making boxes
 user=Entry(screen)
 user.place(x=280,y=130)
-save=Button(screen,text="save",fg="white",bg="black",font=("Brush Script Std",10,"bold"))
+save=Button(screen,text="save",fg="white",bg="black",font=("Brush Script Std",10,"bold"),command=save_file)
 save.place(x=50,y=200)
 delete=Button(screen,text="delete",fg="white",bg="black",font=("Brush Script Std",10,"bold"),command=delete_item)
 delete.place(x=600,y=200)
 add=Button(screen,text="add",fg="white",bg="black",font=("Brush Script Std",10,"bold"),command=add_item)
 add.place(x=325,y=160)
-open=Button(screen,text="open",fg="white",bg="black",font=("Brush Script Std",10,"bold"))
+open=Button(screen,text="open",fg="white",bg="black",font=("Brush Script Std",10,"bold"),command=open_file)
 open.place(x=325,y=380)
 box=Frame(screen)
 scroll=Scrollbar(box,orient="vertical")
